@@ -1,0 +1,138 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: url("img/bg-img1920.png") center / cover no-repeat fixed mediumaquamarine;
+
+    font-size: 24px;
+    font-weight: 400;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 20px 20px;
+
+    display: flex;
+}
+
+.search-block {
+    flex: 0 0 25%;
+    padding: 0 10px;
+}
+
+.search-block__title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.search-block__input {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 1.7em;
+    border: 1px solid #65CDF9;
+    padding: 0 10px;
+    border-radius: 15px;
+    font: inherit;
+}
+
+.search-block__input--active {
+    border-radius: 15px 15px 0 0;
+}
+
+.search-block__input:focus {
+    outline: none;
+}
+
+.search-block__result {
+    display: none;
+    background: white;
+    border-radius: 0 0 15px 15px;
+}
+
+.search-block__result--active {
+    display: block;
+}
+
+.search-block__item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #65CDF9;
+    transition: background-color 0.2s;
+}
+
+.search-block__item:hover {
+    background: #65CDF9;
+}
+
+.search-block__description {
+    padding: 10px;
+    font-size: 0.7rem;
+    color: gray;
+    text-align: center;
+}
+
+.save-search {
+    flex: 0 0 75%;
+    box-sizing: border-box;
+    padding: 0 2%;
+    height: 100%;
+}
+
+.save-search__title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.save-search__list {
+    position: relative;
+    box-sizing: border-box;
+    height: 80vh;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid white;
+    box-shadow: 0 0 5px 1px white;
+    border-radius: 10px;
+}
+
+.save-search__list::after {
+    content: "Saved list is empty";
+    color: darkslategray;
+    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.save-search__list-item {
+    position: relative;
+    display: flex;
+    background: white;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+}
+
+.save-search__item-name {
+    flex: 0 0 35%;
+}
+
+.save-search__item-owner {
+    flex: 0 0 35%;
+}
+
+.save-search__item-stars {
+    flex: 0 0 20%;
+}
+
+.save-search__delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
