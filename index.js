@@ -16,6 +16,12 @@ searchResults.addEventListener('click', (e) => {
     }
 })
 
+savedList.addEventListener('click', (e) => {
+    if (e.target.classList.contains('save-search__delete-button')) {
+        e.target.closest('.save-search__list-item').remove();
+    }
+})
+
 inputArea.addEventListener('input', () => {
     clearResultArea();
     if (inputArea.value === '') {
@@ -29,21 +35,34 @@ inputArea.addEventListener('input', () => {
     }
 })
 
+const emptyListObserver = new MutationObserver(() => {
+    if (savedList.children.length > 0) {
+        savedList.classList.remove('save-search__list--empty');
+    } else {
+        savedList.classList.add('save-search__list--empty')
+    }
+});
+
+emptyListObserver.observe(savedList, {childList: true})
+
 function createSavedListItem (repo) {
     let savedEl = document.createElement('li');
     savedEl.classList.add('save-search__list-item');
+    let savedElOwnerAvatar = document.createElement('img');
+    savedElOwnerAvatar.classList.add('save-search__item-avatar');
+    savedElOwnerAvatar.src = repo.owner.avatar_url;
+    let savedElOwner = document.createElement('div');
+    savedElOwner.classList.add('save-search__item-owner');
+    savedElOwner.insertAdjacentHTML('afterbegin', `<b>Owner:</b><br>${repo.owner.login}`);
     let savedElName = document.createElement('div');
     savedElName.classList.add('save-search__item-name');
     savedElName.insertAdjacentHTML('afterbegin', `<b>Name:</b><br>${repo.name}`);
-    let savedElOwner = document.createElement('div');
-    savedElOwner.classList.add('save-search__item-owner');
-    savedElOwner.insertAdjacentHTML('afterbegin', `<b>Author:</b><br>${repo.owner.login}`);
     let savedElStars = document.createElement('div');
     savedElStars.classList.add('save-search__item-stars');
     savedElStars.insertAdjacentHTML('afterbegin', `<b>Stars:</b><br>${repo.stargazers_count}`);
     let savedElDeleteButton = document.createElement('button');
     savedElDeleteButton.classList.add('save-search__delete-button');
-    savedEl.append(savedElName, savedElOwner, savedElStars, savedElDeleteButton);
+    savedEl.append(savedElOwnerAvatar, savedElOwner, savedElName, savedElStars, savedElDeleteButton);
     savedList.append(savedEl);
 }
 

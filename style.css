@@ -97,9 +97,24 @@ body, html {
     border: 1px solid white;
     box-shadow: 0 0 5px 1px white;
     border-radius: 10px;
+    overflow-y: auto;
 }
 
-.save-search__list::after {
+.save-search__list::-webkit-scrollbar{
+    width:6px;
+}
+
+.save-search__list::-webkit-scrollbar-thumb{
+    border-radius: 6px;
+    background-color: #aaa;
+}
+
+.save-search__list::-webkit-scrollbar-track{
+    border-width:0;
+}
+
+
+.save-search__list--empty::after {
     content: "Saved list is empty";
     color: darkslategray;
     display: block;
@@ -112,9 +127,23 @@ body, html {
 .save-search__list-item {
     position: relative;
     display: flex;
+    align-items: center;
     background: white;
     padding: 10px 15px;
     margin-bottom: 5px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    box-shadow: 0 0 3px 0.5px black;
+}
+
+.save-search__list-item b {
+    font-weight: bold;
+}
+
+.save-search__item-avatar {
+    width: 50px;
+    height: 50px;
+    margin-right: 30px;
     border-radius: 10px;
 }
 
@@ -132,7 +161,22 @@ body, html {
 
 .save-search__delete-button {
     position: absolute;
+    height: 100%;
+    width: 20px;
+    border: none;
+    border-radius: 0 10px 10px 0;
+    background: url("img/delete-icon.png") center / 15px no-repeat red ;
     top: 0;
     right: 0;
+    cursor: pointer;
+    transition: all 0.3s;
 }
+
+.save-search__delete-button:hover,
+.save-search__delete-button:focus{
+    outline: none;
+    width: 60px;
+    background-size: 30px;
+}
+
 
