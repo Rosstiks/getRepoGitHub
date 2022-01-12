@@ -5,7 +5,7 @@ const savedList = document.querySelector('.save-search__list');
 let currentSearchResults = [];
 searchGitRepo = debounce(searchGitRepo);
 
-searchResults.addEventListener('click', (e) => {
+const searchResultsListener = (e) => {
     if (e.target.classList.contains('search-block__item')) {
         let selectedElement = currentSearchResults.find(el => el.id == e.target.dataset.id);
         createSavedListItem(selectedElement);
@@ -14,7 +14,7 @@ searchResults.addEventListener('click', (e) => {
         inputArea.classList.remove('search-block__input--active');
         searchResults.classList.remove('search-block__result--active');
     }
-})
+}
 
 savedList.addEventListener('click', (e) => {
     if (e.target.classList.contains('save-search__delete-button')) {
@@ -24,13 +24,15 @@ savedList.addEventListener('click', (e) => {
 
 inputArea.addEventListener('input', () => {
     clearResultArea();
-    if (inputArea.value === '') {
+    if (inputArea.value === '' || !inputArea.value.trim().length) {
         inputArea.classList.remove('search-block__input--active');
         searchResults.classList.remove('search-block__result--active');
+        searchResults.removeEventListener('click', searchResultsListener)
     } else {
         inputArea.classList.add('search-block__input--active');
         searchResults.classList.add('search-block__result--active');
-        searchDescription.textContent = 'Insert keyword for search repositories'
+        searchDescription.textContent = 'Insert keyword for search repositories';
+        searchResults.addEventListener('click', searchResultsListener);
         searchGitRepo(inputArea.value);
     }
 })
@@ -46,24 +48,32 @@ const emptyListObserver = new MutationObserver(() => {
 emptyListObserver.observe(savedList, {childList: true})
 
 function createSavedListItem (repo) {
-    let savedEl = document.createElement('li');
-    savedEl.classList.add('save-search__list-item');
-    let savedElOwnerAvatar = document.createElement('img');
-    savedElOwnerAvatar.classList.add('save-search__item-avatar');
-    savedElOwnerAvatar.src = repo.owner.avatar_url;
-    let savedElOwner = document.createElement('div');
-    savedElOwner.classList.add('save-search__item-owner');
-    savedElOwner.insertAdjacentHTML('afterbegin', `<b>Owner:</b><br>${repo.owner.login}`);
-    let savedElName = document.createElement('div');
-    savedElName.classList.add('save-search__item-name');
-    savedElName.insertAdjacentHTML('afterbegin', `<b>Name:</b><br>${repo.name}`);
-    let savedElStars = document.createElement('div');
-    savedElStars.classList.add('save-search__item-stars');
-    savedElStars.insertAdjacentHTML('afterbegin', `<b>Stars:</b><br>${repo.stargazers_count}`);
-    let savedElDeleteButton = document.createElement('button');
-    savedElDeleteButton.classList.add('save-search__delete-button');
+    const avatarURL = repo.owner.avatar_url;
+    const ownerText = `<b>Owner:</b><br>${repo.owner.login}`;
+    const nameText = `<b>Name:</b><br>${repo.name}`;
+    const starsText = `<b>Stars:</b><br>${repo.stargazers_count}`;
+
+    const savedEl = createNodeElement('li', 'list-item')
+    const savedElOwnerAvatar = createNodeElement('img', 'item-avatar', null, avatarURL)
+    const savedElOwner = createNodeElement('div', 'item-owner', ownerText)
+    const savedElName = createNodeElement('div', 'item-name', nameText)
+    const savedElStars = createNodeElement('div', 'item-stars', starsText)
+    const savedElDeleteButton = createNodeElement('bytton', 'delete-button')
+
     savedEl.append(savedElOwnerAvatar, savedElOwner, savedElName, savedElStars, savedElDeleteButton);
     savedList.append(savedEl);
+}
+
+function createNodeElement(tag, className, insertHTML, src) {
+    const el = document.createElement(tag);
+    el.classList.add(`save-search__${className}`);
+    if (insertHTML) {
+        el.insertAdjacentHTML('afterbegin', insertHTML)
+    }
+    if (src) {
+        el.src = src;
+    }
+    return el;
 }
 
 function clearResultArea(){
