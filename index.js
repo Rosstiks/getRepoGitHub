@@ -16,11 +16,11 @@ const searchResultsListener = (e) => {
     }
 }
 
-savedList.addEventListener('click', (e) => {
+const savedListListener = (e) => {
     if (e.target.classList.contains('save-search__delete-button')) {
         e.target.closest('.save-search__list-item').remove();
     }
-})
+}
 
 inputArea.addEventListener('input', () => {
     clearResultArea();
@@ -40,8 +40,10 @@ inputArea.addEventListener('input', () => {
 const emptyListObserver = new MutationObserver(() => {
     if (savedList.children.length > 0) {
         savedList.classList.remove('save-search__list--empty');
+        savedList.addEventListener('click', savedListListener);
     } else {
-        savedList.classList.add('save-search__list--empty')
+        savedList.classList.add('save-search__list--empty');
+        savedList.removeEventListener('click', savedListListener);
     }
 });
 
